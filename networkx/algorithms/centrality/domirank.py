@@ -6,22 +6,22 @@ from networkx.utils import not_implemented_for
 __all__ = ["domirank"]
 
 
+# @nx._dispatchable(edge_attrs="weight")
 @not_implemented_for("multigraph")
-@nx._dispatchable(edge_attrs="weight")
 def domirank(
     G, analytical=False, sigma=0.95, dt=0.1, epsilon=1e-5, max_iter=1000, check_step=10
 ):
-    r"""Compute the DomiRank centrality for the graph G.
+    r"""Compute the DomiRank centrality for the graph `G`.
 
-    DomiRank centrality computes the centrality for a node by adding
+    DomiRank centrality [1]_ computes the centrality for a node by adding
     1 minus the centrality of its neighborhood. This essentially finds the
     dominance of a node in its neighborhood, where the parameter $\sigma$ determines
     the amount of competition in the system. The competition parameter $\sigma$
-    tunes the balance of DomiRanks integration of  local and global topological
-    information, to find nodes that are either locally or globally Dominant. It is
+    tunes the balance of DomiRank centrality's integration of local and global topological
+    information, to find nodes that are either locally or globally dominant. It is
     important to note that for the iterative formulation of DomiRank (as seen below),
-    the competition parameter is bounded: $\sigma \in [0,\frac{1}{-lambda_N}].
-    DomiRank is defined as the stationary solution to the dynamical system:
+    the competition parameter is bounded: $\sigma \in [0,1/(-\lambda_N)]$.
+    DomiRank centrality is defined as the stationary solution to the dynamical system:
 
     .. math::
 
@@ -35,12 +35,12 @@ def domirank(
     with a weight $w_{ij}$. In general, one will notice that important
     nodes identified by DomiRank will be connected to a lot of other
     unimportant nodes. However, other positionally important nodes
-    can also be dominanted by joint-dominance of nodes, that work together
+    can also be dominated by joint-dominance of nodes, that work together
     in order to dominate another positionally important node. This centrality
     has a lot of interesting emergent phenomena, so it is recommend to
-    see [1] for more information. That being said, DomiRank can also be
-    expressed in its analytical form, where, the competition can now be
-    supercharged - i.e. $\sigma \in [0,\inf]$. The analytical equation
+    see [1]_ for more information. That being said, DomiRank centrality can also be
+    expressed in its analytical form, where the competition can now be
+    supercharged - i.e. $\sigma \in [0,+\infty)$. The analytical equation
     takes the form:
 
     .. math::
@@ -57,7 +57,7 @@ def domirank(
     which instead of fighting for their resources/dominance, directly
     give up these resources to their neighborhood.
 
-    Finally, it is not required that the network is weakly or strongly
+    Finally, DomiRank centrality does not require the network to be weakly or strongly
     connected, and can be applied to networks with many components.
 
     Parameters
